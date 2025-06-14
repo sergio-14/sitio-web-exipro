@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.9",
+    "tailwindcss": "^4.1.9"
+  },
+  "scripts": {
+    "watch:css": "tailwindcss -i ./consultora/static/src/css/styles.css -o ./consultora/static/src/dist/styles.css --watch"
+  }
+}

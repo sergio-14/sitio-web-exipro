@@ -1,0 +1,802 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Consultora Exipro {% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'src/dist/styles.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Acme&family=Ancizar+Sans:ital,wght@0,100..1000;1,100..1000&family=Anton&family=Bebas+Neue&family=Boldonse&family=Bungee&family=Cal+Sans&family=Dancing+Script:wght@400..700&family=Jaro:opsz@6..72&family=Lobster&family=Marck+Script&family=Oleo+Script:wght@400;700&family=Oswald:wght@200..700&family=Pacifico&family=Permanent+Marker&family=Playwrite+RO:wght@100..400&family=Protest+Strike&family=Roboto:ital,wght@0,100..900;1,100..900&family=Satisfy&family=Special+Gothic+Condensed+One&family=Teko:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="h-screen bg-neutral-100 dark:bg-slate-950">
+    <header
+      id="header"
+      class="px-4 md:px-35 flex justify-between items-center py-1 relative"
+    >
+      <div class="flex justify-center items-center gap-2 py-1">
+        <img
+          src="{% static 'src/img/logowhite.png' %}"
+          alt="Logo de Consultora Exipro"
+          class="w-12 h-10 block dark:hidden"
+        />
+        <img
+          src="{% static 'src/img/logodark.png' %}"
+          alt="Logo de Consultora Exipro"
+          class="w-12 h-10 hidden dark:block"
+        />
+        <h1 class="font-primary text-2xl text-slate-900 dark:text-slate-300">
+          Consultora Exipro
+        </h1>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:block">
+        <ul class="gap-2 flex justify-center items-center">
+          <li>
+            <a
+              href=""
+              class="font-primary text-[14px] bg-neutral-200 dark:bg-slate-800 hover:bg-slate-600 hover:text-slate-100 rounded-full text-amber-300 py-1 px-4"
+              >Inicio</a
+            >
+          </li>
+          <li>
+            <a
+              href=""
+              class="font-primary text-[14px] bg-neutral-200 dark:bg-slate-800 hover:bg-slate-600 hover:text-amber-300 rounded-full text-slate-950 dark:text-slate-300 py-1 px-4"
+              >Sobre nosotros</a
+            >
+          </li>
+          <li>
+            <a
+              href=""
+              class="font-primary text-[14px] bg-neutral-200 dark:bg-slate-800 hover:bg-slate-600 hover:text-amber-300 rounded-full text-slate-950 dark:text-slate-300 py-1 px-4"
+              >Servicios</a
+            >
+          </li>
+          <li>
+            <a
+              href=""
+              class="font-primary text-[14px] bg-neutral-200 dark:bg-slate-800 hover:bg-slate-600 hover:text-amber-300 rounded-full text-slate-950 dark:text-slate-300 py-1 px-4"
+              >Contacto</a
+            >
+          </li>
+          <li>
+            <button
+              id="theme-toggle"
+              class="font-primary text-[14px] bg-neutral-200 dark:bg-slate-800 hover:bg-slate-600 rounded-full text-slate-950 dark:text-slate-300 p-2 flex items-center justify-center"
+              aria-label="Cambiar tema"
+              type="button"
+            >
+              <!-- Sun icon (light) -->
+              <svg
+                id="icon-sun"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 hidden"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  fill="currentColor"
+                />
+                <path
+                  stroke="currentColor"
+                  stroke-width="2"
+                  d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                />
+              </svg>
+              <!-- Moon icon (dark) -->
+              <svg
+                id="icon-moon"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 hidden"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-width="2"
+                  d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"
+                />
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Mobile Menu Button and Theme Toggle -->
+      <div class="md:hidden flex items-center gap-2">
+        <!-- Theme Toggle for Mobile -->
+        <button
+          id="theme-toggle-mobile"
+          class="font-primary text-[14px] bg-neutral-200 dark:bg-slate-800 hover:bg-slate-600 rounded-full text-slate-950 dark:text-slate-300 p-2 flex items-center justify-center"
+          aria-label="Cambiar tema"
+          type="button"
+        >
+          <!-- Sun icon (light) -->
+          <svg
+            id="icon-sun-mobile"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 hidden"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="5"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="currentColor"
+            />
+            <path
+              stroke="currentColor"
+              stroke-width="2"
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+            />
+          </svg>
+          <!-- Moon icon (dark) -->
+          <svg
+            id="icon-moon-mobile"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 hidden"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke="currentColor"
+              stroke-width="2"
+              d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"
+            />
+          </svg>
+        </button>
+
+        <!-- Hamburger Menu Button -->
+        <button
+          id="menu-toggle"
+          class="font-primary text-[14px] bg-neutral-200 dark:bg-slate-800 hover:bg-slate-600 rounded-full text-slate-950 dark:text-slate-300 p-2 flex items-center justify-center"
+          aria-label="Abrir menú"
+          type="button"
+        >
+          <!-- Hamburger icon -->
+          <svg
+            id="hamburger-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+          <!-- Close icon -->
+          <svg
+            id="close-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 hidden"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Navigation Menu -->
+      <nav
+        id="mobile-menu"
+        class="md:hidden absolute top-full left-0 right-0 bg-neutral-100 dark:bg-slate-950 border-t border-neutral-300 dark:border-slate-700 shadow-lg hidden z-50"
+      >
+        <ul class="flex flex-col py-2">
+          <li>
+            <a
+              href=""
+              class="font-primary text-[14px] hover:bg-slate-600 hover:text-amber-300 block text-slate-950 dark:text-slate-300 py-3 px-6 border-b border-neutral-300 dark:border-slate-700"
+              >Inicio</a
+            >
+          </li>
+          <li>
+            <a
+              href=""
+              class="font-primary text-[14px] hover:bg-slate-600 hover:text-amber-300 block text-slate-950 dark:text-slate-300 py-3 px-6 border-b border-neutral-300 dark:border-slate-700"
+              >Sobre nosotros</a
+            >
+          </li>
+          <li>
+            <a
+              href=""
+              class="font-primary text-[14px] hover:bg-slate-600 hover:text-amber-300 block text-slate-950 dark:text-slate-300 py-3 px-6 border-b border-neutral-300 dark:border-slate-700"
+              >Servicios</a
+            >
+          </li>
+          <li>
+            <a
+              href=""
+              class="font-primary text-[14px] hover:bg-slate-600 hover:text-amber-300 block text-slate-950 dark:text-slate-300 py-3 px-6"
+              >Contacto</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section
+        class="h-screen grid items-center justify-center px-4 grid-cols-2 md:px-35 py-2"
+      >
+        <div class="text-start col-span-1 pb-18">
+          <div class="flex gap-1 items-center justify-start">
+            <h2
+              class="pb-1 font-primary md:text-[40px] text-3xl md:px-0 px-2 font-bold bg-gradient-to-r from-slate-900 dark:from-green-600 to-cyan-600 bg-clip-text text-transparent"
+            >
+              Bienvenido a tu Consultora
+            </h2>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="54"
+              height="54"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-green-300 transition-colors icon icon-tabler icons-tabler-outline icon-tabler-rosette-discount-check"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path
+                d="M5 7.2a2.2 2.2 0 0 1 2.2 -2.2h1a2.2 2.2 0 0 0 1.55 -.64l.7 -.7a2.2 2.2 0 0 1 3.12 0l.7 .7c.412 .41 .97 .64 1.55 .64h1a2.2 2.2 0 0 1 2.2 2.2v1c0 .58 .23 1.138 .64 1.55l.7 .7a2.2 2.2 0 0 1 0 3.12l-.7 .7a2.2 2.2 0 0 0 -.64 1.55v1a2.2 2.2 0 0 1 -2.2 2.2h-1a2.2 2.2 0 0 0 -1.55 .64l-.7 .7a2.2 2.2 0 0 1 -3.12 0l-.7 -.7a2.2 2.2 0 0 0 -1.55 -.64h-1a2.2 2.2 0 0 1 -2.2 -2.2v-1a2.2 2.2 0 0 0 -.64 -1.55l-.7 -.7a2.2 2.2 0 0 1 0 -3.12l.7 -.7a2.2 2.2 0 0 0 .64 -1.55v-1"
+              />
+              <path d="M9 12l2 2l4 -4" />
+            </svg>
+          </div>
+          <p
+            class="font-sans text-lg md:text-[18px] text-slate-700 dark:text-slate-400 mb-6"
+          >
+            Somos una consultora integral que ofrece soluciones tecnológicas y
+            empresariales: desarrollamos y vendemos software para negocios,
+            impulsamos la innovación en el sector agrícola con tecnología
+            aplicada, y brindamos servicios contables y auditorías para una
+            gestión financiera eficiente.
+          </p>
+          <div
+            class="relative w-80 mt-2 text-[24px] font-sans flex justify-center items-center pt-2 tickets-button rounded-full bg-gradient-to-r from-[#020233] via-[#19037a] to-[#010d30] px-5 py-2 font-bold text-green-100 shadow-lg shadow-[#22ddb5]/30 transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#1836df]/40"
+          >
+            <a href="#tickets" id="tickets-button" class="">
+              Agenda una Cita
+            </a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="ms-1 text-green-500 icon icon-tabler icons-tabler-outline icon-tabler-cash-edit"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path
+                d="M7 15h-3a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v3"
+              />
+              <path
+                d="M11 19h-3a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v1.25"
+              />
+              <path
+                d="M18.42 15.61a2.1 2.1 0 1 1 2.97 2.97l-3.39 3.42h-3v-3z"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="col-span-1 flex justify-center items-center relative overflow-hidden h-full"
+        >
+          <img
+            src="{% static 'src/img/venta-software.png' %}"
+            alt="Imagen de bienvenida"
+            class="w-auto h-full mask-b-from-80% fade-image opacity-100 transition-opacity duration-1000 absolute"
+          />
+          <img
+            src="{% static 'src/img/venta-agricola.png' %}"
+            alt="Imagen de bienvenida"
+            class="w-auto h-full mask-b-from-80% fade-image opacity-0 transition-opacity duration-1000 absolute"
+          />
+          <img
+            src="{% static 'src/img/venta-contabilidad.png' %}"
+            alt="Imagen de bienvenida"
+            class="w-auto h-full mask-b-from-80% fade-image opacity-0 transition-opacity duration-1000 absolute"
+          />
+        </div>
+      </section>
+      <section
+        class="w-full mx-0 relative mask-b-from-90% mask-t-from-80% mask-l-from-90% mask-r-from-90%"
+      >
+        <div
+          class="absolute top-0 z-[-2] h-screen w-full bg-neutral-100 bg-[radial-gradient(#000000a6_1px,#ffffff33_1px)] bg-[size:20px_20px] dark:bg-[#000000] dark:bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] dark:bg-[size:20px_20px]"
+        ></div>
+        <div class="px-40 pt-26">
+          <h3
+            class="text-center md:px-60 pb-12 font-primary md:text-[40px] text-3xl px-2 font-bold bg-gradient-to-r from-slate-900 dark:from-green-600 to-cyan-600 bg-clip-text text-transparent"
+          >
+            Todas las rutas de aprendizaje que necesitas en 19 escuelas
+          </h3>
+        </div>
+        <div
+          class="px-40 pb-30 grid grid-cols-3 gap-4 pt-10 justify-center items-center"
+        >
+          <div
+            class="p-3 border-[1px] col-span-1 bg-neutral-200 dark:bg-slate-950 border-white dark:border-white/10 rounded-lg h-auto"
+          >
+            <div class="flex justify-start items-center pb-3 gap-2">
+              {% comment %}
+              <img
+                src="{% static 'src/img/logowhite.png' %}"
+                alt="Logo de Consultora Exipro"
+                class="w-12 h-10 block dark:hidden"
+              />
+              {% endcomment %}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="44"
+                height="44"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-fuchsia-500 border rounded-b-full p-2 border-fuchsia-500 icon icon-tabler icons-tabler-outline icon-tabler-brand-github-copilot"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 18v-5.5c0 -.667 .167 -1.333 .5 -2" />
+                <path
+                  d="M12 7.5c0 -1 -.01 -4.07 -4 -3.5c-3.5 .5 -4 2.5 -4 3.5c0 1.5 0 4 3 4c4 0 5 -2.5 5 -4z"
+                />
+                <path
+                  d="M4 12c-1.333 .667 -2 1.333 -2 2c0 1 0 3 1.5 4c3 2 6.5 3 8.5 3s5.499 -1 8.5 -3c1.5 -1 1.5 -3 1.5 -4c0 -.667 -.667 -1.333 -2 -2"
+                />
+                <path d="M20 18v-5.5c0 -.667 -.167 -1.333 -.5 -2" />
+                <path
+                  d="M12 7.5l0 -.297l.01 -.269l.027 -.298l.013 -.105l.033 -.215c.014 -.073 .029 -.146 .046 -.22l.06 -.223c.336 -1.118 1.262 -2.237 3.808 -1.873c2.838 .405 3.703 1.797 3.93 2.842l.036 .204c0 .033 .01 .066 .013 .098l.016 .185l0 .171l0 .49l-.015 .394l-.02 .271c-.122 1.366 -.655 2.845 -2.962 2.845c-3.256 0 -4.524 -1.656 -4.883 -3.081l-.053 -.242a3.865 3.865 0 0 1 -.036 -.235l-.021 -.227a3.518 3.518 0 0 1 -.007 -.215z"
+                />
+                <path d="M10 15v2" />
+                <path d="M14 15v2" />
+              </svg>
+              <h4
+                class="font-secondary text-xl text-slate-900 dark:text-slate-300"
+              >
+                Consultora Exipro
+              </h4>
+            </div>
+            <h4
+              class="font-secondary text-center text-[14px] rounded-lg py-1 bg-neutral-100 dark:bg-slate-900 text-slate-900 dark:text-slate-300"
+            >
+              Selecciona Opcion
+            </h4>
+          </div>
+          <div
+            class="p-3 border-[1px] col-span-1 bg-neutral-200 dark:bg-slate-950 border-white dark:border-white/10 rounded-lg h-auto"
+          >
+            <div class="flex justify-start items-center pb-3 gap-2">
+              {% comment %}
+              <img
+                src="{% static 'src/img/logowhite.png' %}"
+                alt="Logo de Consultora Exipro"
+                class="w-12 h-10 block dark:hidden"
+              />
+              {% endcomment %}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="44"
+                height="44"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-green-400 border rounded-b-full p-2 border-green-400 icon icon-tabler icons-tabler-outline icon-tabler-brand-github-copilot"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 18v-5.5c0 -.667 .167 -1.333 .5 -2" />
+                <path
+                  d="M12 7.5c0 -1 -.01 -4.07 -4 -3.5c-3.5 .5 -4 2.5 -4 3.5c0 1.5 0 4 3 4c4 0 5 -2.5 5 -4z"
+                />
+                <path
+                  d="M4 12c-1.333 .667 -2 1.333 -2 2c0 1 0 3 1.5 4c3 2 6.5 3 8.5 3s5.499 -1 8.5 -3c1.5 -1 1.5 -3 1.5 -4c0 -.667 -.667 -1.333 -2 -2"
+                />
+                <path d="M20 18v-5.5c0 -.667 -.167 -1.333 -.5 -2" />
+                <path
+                  d="M12 7.5l0 -.297l.01 -.269l.027 -.298l.013 -.105l.033 -.215c.014 -.073 .029 -.146 .046 -.22l.06 -.223c.336 -1.118 1.262 -2.237 3.808 -1.873c2.838 .405 3.703 1.797 3.93 2.842l.036 .204c0 .033 .01 .066 .013 .098l.016 .185l0 .171l0 .49l-.015 .394l-.02 .271c-.122 1.366 -.655 2.845 -2.962 2.845c-3.256 0 -4.524 -1.656 -4.883 -3.081l-.053 -.242a3.865 3.865 0 0 1 -.036 -.235l-.021 -.227a3.518 3.518 0 0 1 -.007 -.215z"
+                />
+                <path d="M10 15v2" />
+                <path d="M14 15v2" />
+              </svg>
+              <h4
+                class="font-secondary text-xl text-slate-900 dark:text-slate-300"
+              >
+                Consultora Exipro
+              </h4>
+            </div>
+            <h4
+              class="font-secondary text-center text-[14px] rounded-lg py-1 bg-neutral-100 dark:bg-slate-900 text-slate-900 dark:text-slate-300"
+            >
+              Selecciona Opcion
+            </h4>
+          </div>
+          <div
+            class="p-3 border-[1px] col-span-1 bg-neutral-200 dark:bg-slate-950 border-white dark:border-white/10 rounded-lg h-auto"
+          >
+            <div class="flex justify-start items-center pb-3 gap-2">
+              {% comment %}
+              <img
+                src="{% static 'src/img/logowhite.png' %}"
+                alt="Logo de Consultora Exipro"
+                class="w-12 h-10 block dark:hidden"
+              />
+              {% endcomment %}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="44"
+                height="44"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-amber-400 border rounded-b-full p-2 border-amber-400 icon icon-tabler icons-tabler-outline icon-tabler-brand-github-copilot"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 18v-5.5c0 -.667 .167 -1.333 .5 -2" />
+                <path
+                  d="M12 7.5c0 -1 -.01 -4.07 -4 -3.5c-3.5 .5 -4 2.5 -4 3.5c0 1.5 0 4 3 4c4 0 5 -2.5 5 -4z"
+                />
+                <path
+                  d="M4 12c-1.333 .667 -2 1.333 -2 2c0 1 0 3 1.5 4c3 2 6.5 3 8.5 3s5.499 -1 8.5 -3c1.5 -1 1.5 -3 1.5 -4c0 -.667 -.667 -1.333 -2 -2"
+                />
+                <path d="M20 18v-5.5c0 -.667 -.167 -1.333 -.5 -2" />
+                <path
+                  d="M12 7.5l0 -.297l.01 -.269l.027 -.298l.013 -.105l.033 -.215c.014 -.073 .029 -.146 .046 -.22l.06 -.223c.336 -1.118 1.262 -2.237 3.808 -1.873c2.838 .405 3.703 1.797 3.93 2.842l.036 .204c0 .033 .01 .066 .013 .098l.016 .185l0 .171l0 .49l-.015 .394l-.02 .271c-.122 1.366 -.655 2.845 -2.962 2.845c-3.256 0 -4.524 -1.656 -4.883 -3.081l-.053 -.242a3.865 3.865 0 0 1 -.036 -.235l-.021 -.227a3.518 3.518 0 0 1 -.007 -.215z"
+                />
+                <path d="M10 15v2" />
+                <path d="M14 15v2" />
+              </svg>
+              <h4
+                class="font-secondary text-xl text-slate-900 dark:text-slate-300"
+              >
+                Consultora Exipro
+              </h4>
+            </div>
+            <h4
+              class="font-secondary text-center text-[14px] rounded-lg py-1 bg-neutral-100 dark:bg-slate-900 text-slate-900 dark:text-slate-300"
+            >
+              Selecciona Opcion
+            </h4>
+          </div>
+          <div
+            class="p-3 border-[1px] col-span-1 bg-neutral-200 dark:bg-slate-950 border-white dark:border-white/10 rounded-lg h-auto"
+          >
+            <div class="flex justify-start items-center pb-3 gap-2">
+              {% comment %}
+              <img
+                src="{% static 'src/img/logowhite.png' %}"
+                alt="Logo de Consultora Exipro"
+                class="w-12 h-10 block dark:hidden"
+              />
+              {% endcomment %}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="44"
+                height="44"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-cyan-400 border rounded-b-full p-2 border-cyan-400 icon icon-tabler icons-tabler-outline icon-tabler-brand-github-copilot"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 18v-5.5c0 -.667 .167 -1.333 .5 -2" />
+                <path
+                  d="M12 7.5c0 -1 -.01 -4.07 -4 -3.5c-3.5 .5 -4 2.5 -4 3.5c0 1.5 0 4 3 4c4 0 5 -2.5 5 -4z"
+                />
+                <path
+                  d="M4 12c-1.333 .667 -2 1.333 -2 2c0 1 0 3 1.5 4c3 2 6.5 3 8.5 3s5.499 -1 8.5 -3c1.5 -1 1.5 -3 1.5 -4c0 -.667 -.667 -1.333 -2 -2"
+                />
+                <path d="M20 18v-5.5c0 -.667 -.167 -1.333 -.5 -2" />
+                <path
+                  d="M12 7.5l0 -.297l.01 -.269l.027 -.298l.013 -.105l.033 -.215c.014 -.073 .029 -.146 .046 -.22l.06 -.223c.336 -1.118 1.262 -2.237 3.808 -1.873c2.838 .405 3.703 1.797 3.93 2.842l.036 .204c0 .033 .01 .066 .013 .098l.016 .185l0 .171l0 .49l-.015 .394l-.02 .271c-.122 1.366 -.655 2.845 -2.962 2.845c-3.256 0 -4.524 -1.656 -4.883 -3.081l-.053 -.242a3.865 3.865 0 0 1 -.036 -.235l-.021 -.227a3.518 3.518 0 0 1 -.007 -.215z"
+                />
+                <path d="M10 15v2" />
+                <path d="M14 15v2" />
+              </svg>
+              <h4
+                class="font-secondary text-xl text-slate-900 dark:text-slate-300"
+              >
+                Consultora Exipro
+              </h4>
+            </div>
+            <h4
+              class="font-secondary text-center text-[14px] rounded-lg py-1 bg-neutral-100 dark:bg-slate-900 text-slate-900 dark:text-slate-300"
+            >
+              Selecciona Opcion
+            </h4>
+          </div>
+          <div
+            class="p-3 border-[1px] col-span-1 bg-neutral-200 dark:bg-slate-950 border-white dark:border-white/10 rounded-lg h-auto"
+          >
+            <div class="flex justify-start items-center pb-3 gap-2">
+              {% comment %}
+              <img
+                src="{% static 'src/img/logowhite.png' %}"
+                alt="Logo de Consultora Exipro"
+                class="w-12 h-10 block dark:hidden"
+              />
+              {% endcomment %}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="44"
+                height="44"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-red-400 border rounded-b-full p-2 border-red-400 icon icon-tabler icons-tabler-outline icon-tabler-brand-github-copilot"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 18v-5.5c0 -.667 .167 -1.333 .5 -2" />
+                <path
+                  d="M12 7.5c0 -1 -.01 -4.07 -4 -3.5c-3.5 .5 -4 2.5 -4 3.5c0 1.5 0 4 3 4c4 0 5 -2.5 5 -4z"
+                />
+                <path
+                  d="M4 12c-1.333 .667 -2 1.333 -2 2c0 1 0 3 1.5 4c3 2 6.5 3 8.5 3s5.499 -1 8.5 -3c1.5 -1 1.5 -3 1.5 -4c0 -.667 -.667 -1.333 -2 -2"
+                />
+                <path d="M20 18v-5.5c0 -.667 -.167 -1.333 -.5 -2" />
+                <path
+                  d="M12 7.5l0 -.297l.01 -.269l.027 -.298l.013 -.105l.033 -.215c.014 -.073 .029 -.146 .046 -.22l.06 -.223c.336 -1.118 1.262 -2.237 3.808 -1.873c2.838 .405 3.703 1.797 3.93 2.842l.036 .204c0 .033 .01 .066 .013 .098l.016 .185l0 .171l0 .49l-.015 .394l-.02 .271c-.122 1.366 -.655 2.845 -2.962 2.845c-3.256 0 -4.524 -1.656 -4.883 -3.081l-.053 -.242a3.865 3.865 0 0 1 -.036 -.235l-.021 -.227a3.518 3.518 0 0 1 -.007 -.215z"
+                />
+                <path d="M10 15v2" />
+                <path d="M14 15v2" />
+              </svg>
+              <h4
+                class="font-secondary text-xl text-slate-900 dark:text-slate-300"
+              >
+                Consultora Exipro
+              </h4>
+            </div>
+            <h4
+              class="font-secondary text-center text-[14px] rounded-lg py-1 bg-neutral-100 dark:bg-slate-900 text-slate-900 dark:text-slate-300"
+            >
+              Selecciona Opcion
+            </h4>
+          </div>
+        </div>
+      </section>
+      <section class="px-38 py-20">
+        <div class="grid grid-cols-4 gap-3">
+          <div
+            class="relative overflow-hidden col-span-2 p-4 group row-span-2 border-2 border-white/10 rounded-2xl h-60 bg-orange-400"
+          >
+            <div class="relative z-20 w-100">
+              <h4 class="text-orange-700 font-primary text-3xl pb-4">
+                Optimizamos Trabajos Difíciles en tu negocio
+              </h4>
+              <p class="text-orange-200 font-secondary text-wrap text-xl pe-12">
+                Con nuestro software a la medida cambiamos la forma en que
+                trabajas en tu negocio: con nuestro método, menos trabajo y más
+                optimización.
+              </p>
+            </div>
+
+            <img
+              src="{% static 'src/img/grid-1.png' %}"
+              alt="Logo de Consultora Exipro"
+              class="absolute -bottom-5 -right-5 w-auto h-60 z-10 transition-transform duration-700 group-hover:bottom-0 group-hover:right-0 group-hover:scale-125"
+            />
+          </div>
+
+          <div
+            class="col-span-1 row-span-2 border-[1px] border-white/10 rounded-3xl h-60 bg-green-500"
+          >
+            hola
+          </div>
+          <div
+            class="col-span-1 row-span-3 border-[1px] border-white/10 rounded-3xl h-132 bg-blue-500"
+          >
+            hola
+          </div>
+          <div
+            class="col-span-3 row-span-1 border-[1px] border-white/10 rounded-3xl h-70 bg-fuchsia-500"
+          >
+            hola
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer></footer>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const images = document.querySelectorAll(".fade-image");
+      let index = 0;
+
+      setInterval(() => {
+        // Oculta la imagen actual
+        images[index].classList.remove("opacity-100");
+        images[index].classList.add("opacity-0");
+
+        // Calcula la siguiente imagen
+        index = (index + 1) % images.length;
+
+        // Muestra la nueva imagen
+        images[index].classList.remove("opacity-0");
+        images[index].classList.add("opacity-100");
+      }, 4000); // Cambia cada 4 segundos
+    });
+  </script>
+
+  <script>
+    // Theme toggle logic
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeToggleMobile = document.getElementById("theme-toggle-mobile");
+    const iconSun = document.getElementById("icon-sun");
+    const iconMoon = document.getElementById("icon-moon");
+    const iconSunMobile = document.getElementById("icon-sun-mobile");
+    const iconMoonMobile = document.getElementById("icon-moon-mobile");
+    const userPref = localStorage.getItem("theme");
+    const systemPrefDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    function setTheme(dark) {
+      if (dark) {
+        document.documentElement.classList.add("dark");
+        // Desktop icons
+        iconMoon.classList.add("hidden");
+        iconSun.classList.remove("hidden");
+        // Mobile icons
+        iconMoonMobile.classList.add("hidden");
+        iconSunMobile.classList.remove("hidden");
+      } else {
+        document.documentElement.classList.remove("dark");
+        // Desktop icons
+        iconSun.classList.add("hidden");
+        iconMoon.classList.remove("hidden");
+        // Mobile icons
+        iconSunMobile.classList.add("hidden");
+        iconMoonMobile.classList.remove("hidden");
+      }
+    }
+
+    // Initial theme detection
+    if (userPref === "dark" || (!userPref && systemPrefDark)) {
+      setTheme(true);
+    } else {
+      setTheme(false);
+    }
+
+    // Theme toggle event listeners
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      setTheme(!isDark);
+      localStorage.setItem("theme", !isDark ? "dark" : "light");
+    }
+
+    themeToggle?.addEventListener("click", toggleTheme);
+    themeToggleMobile?.addEventListener("click", toggleTheme);
+
+    // Listen to system theme changes
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (!localStorage.getItem("theme")) {
+          setTheme(e.matches);
+        }
+      });
+
+    // Mobile menu toggle logic
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const hamburgerIcon = document.getElementById("hamburger-icon");
+    const closeIcon = document.getElementById("close-icon");
+
+    menuToggle.addEventListener("click", () => {
+      const isMenuOpen = !mobileMenu.classList.contains("hidden");
+
+      if (isMenuOpen) {
+        // Close menu
+        mobileMenu.classList.add("hidden");
+        hamburgerIcon.classList.remove("hidden");
+        closeIcon.classList.add("hidden");
+      } else {
+        // Open menu
+        mobileMenu.classList.remove("hidden");
+        hamburgerIcon.classList.add("hidden");
+        closeIcon.classList.remove("hidden");
+      }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!menuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+        mobileMenu.classList.add("hidden");
+        hamburgerIcon.classList.remove("hidden");
+        closeIcon.classList.add("hidden");
+      }
+    });
+
+    // Close mobile menu when window is resized to desktop
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768) {
+        mobileMenu.classList.add("hidden");
+        hamburgerIcon.classList.remove("hidden");
+        closeIcon.classList.add("hidden");
+      }
+    });
+    // Header glassmorphism effect on scroll
+    const header = document.getElementById("header");
+    let lastScrollY = window.scrollY;
+    let isHeaderFixed = false;
+
+    function updateHeader() {
+      const currentScrollY = window.scrollY;
+      const scrollThreshold = 100; // Adjust this value to change when the effect triggers
+
+      if (currentScrollY > scrollThreshold && !isHeaderFixed) {
+        // Add glassmorphism effect
+        header.classList.add("header-glass", "header-transition");
+        document.body.classList.add("body-with-fixed-header");
+        isHeaderFixed = true;
+      } else if (currentScrollY <= scrollThreshold && isHeaderFixed) {
+        // Remove glassmorphism effect
+        header.classList.remove("header-glass", "header-transition");
+        document.body.classList.remove("body-with-fixed-header");
+        isHeaderFixed = false;
+      }
+
+      lastScrollY = currentScrollY;
+    }
+
+    // Throttle scroll events for better performance
+    let scrollTimeout;
+    window.addEventListener("scroll", () => {
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      scrollTimeout = setTimeout(updateHeader, 10);
+    });
+
+    // Initial check in case page is loaded with scroll position
+    updateHeader();
+  </script>
+</html>
