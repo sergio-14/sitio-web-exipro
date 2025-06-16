@@ -7,6 +7,40 @@
     --font-dancy: 'Dancing Script', cursive;
 }
 
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.submenu.active {
+    max-height: 200px;
+}
+
+.sidebar-collapsed .nav-text {
+    display: none;
+}
+
+.sidebar-collapsed .submenu {
+    display: none;
+}
+
+.sidebar-collapsed .sidebar-item {
+    justify-content: center;
+}
+
+.profile-dropdown {
+    transform: translateY(-10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.profile-dropdown.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
 
 .tickets-button {
     background-size: 200% 100%;
