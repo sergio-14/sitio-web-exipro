@@ -1,0 +1,433 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Responsive</title>
+    <link rel="stylesheet" href="{% static 'src/dist/styles.css' %}" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Acme&family=Ancizar+Sans:ital,wght@0,100..1000;1,100..1000&family=Anton&family=Bebas+Neue&family=Boldonse&family=Bungee&family=Cal+Sans&family=Dancing+Script:wght@400..700&family=Jaro:opsz@6..72&family=Lobster&family=Marck+Script&family=Oleo+Script:wght@400;700&family=Oswald:wght@200..700&family=Pacifico&family=Permanent+Marker&family=Playwrite+RO:wght@100..400&family=Protest+Strike&family=Roboto:ital,wght@0,100..900;1,100..900&family=Satisfy&family=Special+Gothic+Condensed+One&family=Teko:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 dark:bg-slate-900">
+    <!-- Sidebar -->
+    <div
+      id="sidebar"
+      class="fixed left-0 top-0 h-full w-64 dark:bg-slate bg-white dark:bg-slate-950 shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-30"
+    >
+      <!-- Logo -->
+      <div
+        class="flex items-center justify-center h-15 border-b-[1px] border-neutral-300 dark:border-cyan-300/10"
+      >
+        <div class="flex items-center space-x-2">
+          <div class="flex items-center justify-center">
+            <img
+              src="{% static 'src/img/exiprologo.png' %}"
+              alt="Logo de Consultora Exipro"
+              class="w-8 h-8 rounded-full"
+            />
+          </div>
+          <span
+            class="nav-text text-2xl dark:text-neutral-300 font-primary text-gray-800"
+            >Exipro SRL</span
+          >
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="mt-8 px-4">
+        <!-- Inicio -->
+        <a
+          href="{% url 'dashboard' %}"
+          class="sidebar-item flex items-center px-4 py-3 dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-2 transition-colors"
+        >
+          <i class="fas fa-home text-lg"></i>
+          <span class="nav-text ml-3">Panel Principal</span>
+        </a>
+
+        <!-- Dashboard con submenú -->
+        <div class="mb-2">
+          <button
+            class="sidebar-item w-full flex items-center justify-between px-4 py-3 dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg transition-colors"
+            onclick="toggleSubmenu('dashboard-submenu')"
+          >
+            <div class="flex items-center">
+              <i class="fas fa-chart-bar text-lg"></i>
+              <span class="nav-text ml-3">Dashboard</span>
+            </div>
+            <i
+              class="nav-text fas fa-chevron-down text-sm transition-transform duration-200"
+              id="dashboard-icon"
+            ></i>
+          </button>
+          <div id="dashboard-submenu" class="submenu ml-4 mt-2">
+            <a
+              href="#"
+              class="nav-text block px-4 py-2 text-sm dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-1"
+              >Analíticas</a
+            >
+            <a
+              href="#"
+              class="nav-text block px-4 py-2 text-sm dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-1"
+              >Reportes</a
+            >
+            <a
+              href="#"
+              class="nav-text block px-4 py-2 text-sm dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg"
+              >Métricas</a
+            >
+          </div>
+        </div>
+
+        <!-- Usuarios -->
+        <a
+          href="{% url 'lista_usuarios' %}"
+          class="sidebar-item flex items-center px-4 py-3 dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-2 transition-colors"
+        >
+          <i class="fas fa-users text-lg"></i>
+          <span class="nav-text ml-3">Usuarios</span>
+        </a>
+
+        <!-- Productos con submenú -->
+        <div class="mb-2">
+          <button
+            class="sidebar-item w-full flex items-center justify-between px-4 py-3 dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg transition-colors"
+            onclick="toggleSubmenu('products-submenu')"
+          >
+            <div class="flex items-center">
+              <i class="fas fa-box text-lg"></i>
+              <span class="nav-text ml-3">Productos</span>
+            </div>
+            <i
+              class="nav-text fas fa-chevron-down text-sm transition-transform duration-200"
+              id="products-icon"
+            ></i>
+          </button>
+          <div id="products-submenu" class="submenu ml-4 mt-2">
+            <a
+              href="#"
+              class="nav-text block px-4 py-2 text-sm dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-1"
+              >Inventario</a
+            >
+            <a
+              href="#"
+              class="nav-text block px-4 py-2 text-sm dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-1"
+              >Categorías</a
+            >
+            <a
+              href="#"
+              class="nav-text block px-4 py-2 text-sm dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg"
+              >Proveedores</a
+            >
+          </div>
+        </div>
+
+        <!-- Ventas -->
+        <a
+          href="#"
+          class="sidebar-item flex items-center px-4 py-3 dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-2 transition-colors"
+        >
+          <i class="fas fa-shopping-cart text-lg"></i>
+          <span class="nav-text ml-3">Ventas</span>
+        </a>
+
+        <!-- Configuración con submenú -->
+        <div class="mb-2">
+          <button
+            class="sidebar-item w-full flex items-center justify-between px-4 py-3 dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg transition-colors"
+            onclick="toggleSubmenu('settings-submenu')"
+          >
+            <div class="flex items-center">
+              <i class="fas fa-cog text-lg"></i>
+              <span class="nav-text ml-3">Configuración</span>
+            </div>
+            <i
+              class="nav-text fas fa-chevron-down text-sm transition-transform duration-200"
+              id="settings-icon"
+            ></i>
+          </button>
+          <div id="settings-submenu" class="submenu ml-4 mt-2">
+            <a
+              href="#"
+              class="nav-text block px-4 py-2 text-sm dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-1"
+              >General</a
+            >
+            <a
+              href="#"
+              class="nav-text block px-4 py-2 text-sm dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-1"
+              >Seguridad</a
+            >
+            <a
+              href="#"
+              class="nav-text block px-4 py-2 text-sm dark:text-cyan-300/70 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg"
+              >Notificaciones</a
+            >
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Overlay para móvil -->
+    <div
+      id="overlay"
+      class="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden hidden"
+      onclick="toggleSidebar()"
+    ></div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64 transition-all duration-300" id="main-content">
+      <!-- Navbar -->
+      <nav
+        class="bg-white dark:bg-slate-950 shadow-sm border-b-[1px] dark:border-cyan-300/10 border-gray-200 px-4 py-3"
+      >
+        <div class="flex items-center justify-between">
+          <!-- Botón hamburguesa -->
+          <div class="flex items-center space-x-4">
+            <button
+              id="hamburger-btn"
+              class="lg:hidden text-gray-600 hover:text-gray-900 focus:outline-none"
+              onclick="toggleSidebar()"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+            <button
+              id="collapse-btn"
+              class="hidden lg:block text-gray-600 hover:text-gray-900 focus:outline-none"
+              onclick="toggleSidebarCollapse()"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h1 class="text-xl font-primary text-gray-400/40">
+              Panel de Control
+            </h1>
+          </div>
+
+          <!-- Perfil de usuario -->
+          <div class="relative">
+            <button
+              class="flex items-center space-x-3 text-gray-700 hover:text-gray-900 focus:outline-none"
+              onclick="toggleProfileDropdown()"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                alt="Perfil"
+                class="w-8 h-8 rounded-full"
+              />
+              <div class="hidden md:block">
+                <p class="text-sm font-medium">Juan Pérez</p>
+                <p class="text-xs text-gray-500">Administrador</p>
+              </div>
+              <i class="fas fa-chevron-down text-sm"></i>
+            </button>
+
+            <!-- Dropdown del perfil -->
+            <div
+              id="profile-dropdown"
+              class="profile-dropdown absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-200/10 py-2 z-50"
+            >
+              <button
+                id="theme-toggle"
+                class="text-[14px] px-4 rounded-full text-slate-950 dark:text-slate-300 p-2 flex items-center justify-center"
+                aria-label="Cambiar tema"
+                type="button"
+              >
+                <!-- Sun icon (light) -->
+                <svg
+                  id="icon-sun"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 hidden"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="currentColor"
+                  />
+                  <path
+                    stroke="currentColor"
+                    stroke-width="2"
+                    d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                  />
+                </svg>
+                <!-- Moon icon (dark) -->
+                <svg
+                  id="icon-moon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 hidden"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-width="2"
+                    d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"
+                  />
+                </svg>
+                -Tema
+              </button>
+
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-user mr-2"></i>Mi Perfil
+              </a>
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-cog mr-2"></i>Configuración
+              </a>
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-bell mr-2"></i>Notificaciones
+              </a>
+              <div class="border-t border-gray-200 my-2"></div>
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Contenido Principal -->
+      <main class="p-6">
+        <div class="max-w-7xl mx-auto">{% block content %} {% endblock %}</div>
+      </main>
+    </div>
+
+    <script>
+      // Toggle sidebar en móvil
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("overlay");
+
+        sidebar.classList.toggle("-translate-x-full");
+        overlay.classList.toggle("hidden");
+      }
+
+      // Toggle sidebar collapse en desktop
+      function toggleSidebarCollapse() {
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("main-content");
+
+        sidebar.classList.toggle("sidebar-collapsed");
+
+        if (sidebar.classList.contains("sidebar-collapsed")) {
+          sidebar.style.width = "4rem";
+          mainContent.style.marginLeft = "4rem";
+        } else {
+          sidebar.style.width = "16rem";
+          mainContent.style.marginLeft = "16rem";
+        }
+      }
+
+      // Toggle submenús
+      function toggleSubmenu(submenuId) {
+        const submenu = document.getElementById(submenuId);
+        const icon = document.getElementById(
+          submenuId.replace("-submenu", "-icon")
+        );
+
+        submenu.classList.toggle("active");
+        if (icon) {
+          icon.classList.toggle("rotate-180");
+        }
+      }
+
+      // Toggle dropdown de perfil
+      function toggleProfileDropdown() {
+        const dropdown = document.getElementById("profile-dropdown");
+        dropdown.classList.toggle("active");
+      }
+
+      // Cerrar dropdown al hacer clic fuera
+      document.addEventListener("click", function (event) {
+        const profileButton = event.target.closest("button");
+        const dropdown = document.getElementById("profile-dropdown");
+
+        if (!profileButton || !profileButton.onclick) {
+          dropdown.classList.remove("active");
+        }
+      });
+
+      // Manejar redimensionamiento de ventana
+      window.addEventListener("resize", function () {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("overlay");
+        const mainContent = document.getElementById("main-content");
+
+        if (window.innerWidth >= 1024) {
+          sidebar.classList.remove("-translate-x-full");
+          overlay.classList.add("hidden");
+
+          if (!sidebar.classList.contains("sidebar-collapsed")) {
+            mainContent.style.marginLeft = "16rem";
+          }
+        } else {
+          sidebar.classList.add("-translate-x-full");
+          overlay.classList.add("hidden");
+          sidebar.classList.remove("sidebar-collapsed");
+          mainContent.style.marginLeft = "0";
+        }
+      });
+    </script>
+  </body>
+  <script>
+    const themeToggleBtn = document.getElementById("theme-toggle");
+    const iconSun = document.getElementById("icon-sun");
+    const iconMoon = document.getElementById("icon-moon");
+    const stored = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    function setTheme(isDark) {
+      document.documentElement.classList.toggle("dark", isDark);
+      if (iconSun && iconMoon) {
+        iconSun.classList.toggle("hidden", !isDark);
+        iconMoon.classList.toggle("hidden", isDark);
+      }
+    }
+
+    // Inicial
+    setTheme(stored === "dark" || (!stored && prefersDark));
+
+    // Click
+    themeToggleBtn?.addEventListener("click", () => {
+      const isNowDark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("theme", isNowDark ? "dark" : "light");
+      setTheme(isNowDark);
+    });
+
+    // Si cambia el sistema y no hay preferencia guardada
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (!localStorage.getItem("theme")) {
+          setTheme(e.matches);
+        }
+      });
+  </script>
+</html>

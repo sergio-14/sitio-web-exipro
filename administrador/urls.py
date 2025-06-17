@@ -25,7 +25,14 @@ urlpatterns = [
     #area de vista general
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    path('dashboard/', views.dashboard, name='dashboard' )
+    path('dashboard/', views.dashboard, name='dashboard' ),
+    
+    #usuarios 
+    path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
+    path('usuarios/agregar/', views.agregar_usuario, name='agregar_usuario'),
+    path('usuarios/editar/<int:pk>/', views.editar_usuario, name='editar_usuario'),
+    path('usuarios/activar/<int:pk>/', views.activar_usuario, name='activar_usuario'),
+    path('usuarios/deshabilitar/<int:pk>/', views.deshabilitar_usuario, name='deshabilitar_usuario'),
     
     
     
