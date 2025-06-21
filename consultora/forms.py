@@ -158,3 +158,66 @@ class UserForm(forms.ModelForm):
             'direccion': forms.TextInput(attrs={'class': 'input-tw'}),
             'imagen': forms.ClearableFileInput(attrs={'class': 'file-input-tw'}),
         }
+
+from .models import Curso,Categoria
+
+class CursoForm(forms.ModelForm):
+    class Meta:
+        model = Curso
+        fields = ['titulo','descripcion_breve', 'descripcion_completa','imagen_portada', 'precio', 'es_gratuito','fecha_publicacion', 'instructor', 'categoria']
+        widgets = {
+            'titulo': forms.TextInput(attrs={'class': 'input-tw', 'placeholder': 'Título del curso'}),
+            'descripcion_breve': forms.Textarea(attrs={'class': 'input-tw', 'rows': 3, 'placeholder': 'Descripción breve'}),
+            'descripcion_completa': forms.Textarea(attrs={'class': 'input-tw', 'rows': 6, 'placeholder': 'Descripción completa'} ),
+            'imagen_portada': forms.ClearableFileInput(attrs={'class': 'file-input-tw'} ),
+            'precio': forms.NumberInput( attrs={'class': 'input-tw', 'step': '0.01'} ),
+            'es_gratuito': forms.CheckboxInput( attrs={'class': 'checkbox-tw'} ),
+            'fecha_publicacion': forms.DateTimeInput(attrs={'class': 'input-tw','type': 'datetime-local' } ),
+            'instructor': forms.Select( attrs={'class': 'input-tw'}),
+            'categoria': forms.Select(  attrs={'class': 'input-tw'}),
+        }
+        
+class CategoriaForm(forms.ModelForm):
+    class Meta:
+        model = Categoria
+        fields = ['nombre']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'input-tw', 'placeholder': 'Nombre de Categoria'}),
+        }
+        
+        
+from .models import Modulo
+
+
+        
+from django import forms
+from django.forms import inlineformset_factory
+from .models import Modulo, Leccion
+
+class ModuloForm(forms.ModelForm):
+    class Meta:
+        model = Modulo
+        fields = ['titulo', 'orden', 'curso']
+        widgets = {
+            'titulo': forms.TextInput(attrs={'class': 'input-tw', 'placeholder': 'Título del módulo'}),
+            'orden': forms.NumberInput(attrs={'class': 'input-tw'}),
+            'curso': forms.Select(attrs={'class': 'input-tw'}),
+        }
+
+class LeccionForm(forms.ModelForm):
+    class Meta:
+        model = Leccion
+        fields = ['titulo', 'descripcion', 'tipo_contenido', 'url_contenido', 'duracion_minutos', 'orden']
+        widgets = {
+            'titulo': forms.TextInput(attrs={'class': 'input-tw', 'placeholder': 'Título de la lección'}),
+            'descripcion': forms.Textarea(attrs={'class': 'input-tw', 'rows': 2, 'placeholder': 'Descripción'}),
+            'tipo_contenido': forms.TextInput(attrs={'class': 'input-tw', 'placeholder': 'Tipo de contenido'}),
+            'url_contenido': forms.URLInput(attrs={'class': 'input-tw', 'placeholder': 'URL del contenido'}),
+            'duracion_minutos': forms.NumberInput(attrs={'class': 'input-tw'}),
+            'orden': forms.NumberInput(attrs={'class': 'input-tw'}),
+        }
+
+LeccionFormSet = inlineformset_factory(
+    Modulo, Leccion, form=LeccionForm,
+    extra=1, can_delete=True
+)

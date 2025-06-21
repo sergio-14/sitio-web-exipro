@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django.utils.text import slugify
 
 
 
@@ -69,8 +70,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 # ---------------------------------------------------
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
-
     class Meta:
         verbose_name_plural = "Categorías"
 
@@ -83,7 +82,6 @@ class Categoria(models.Model):
 # ---------------------------------------------------
 class Curso(models.Model):
     titulo = models.CharField(max_length=150)
-    slug = models.SlugField(max_length=150, unique=True)
     descripcion_breve = models.TextField(blank=True, null=True)
     descripcion_completa = models.TextField(blank=True, null=True)
     imagen_portada = models.ImageField(upload_to='portadas/', blank=True, null=True)
@@ -108,9 +106,11 @@ class Curso(models.Model):
         blank=True,
         related_name='cursos'
     )
-
+    
     def __str__(self):
         return self.titulo
+    
+    
 
 
 # ---------------------------------------------------

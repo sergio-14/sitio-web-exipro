@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'consultora'
+    'consultora',
+    "widget_tweaks",
     
 ]
+
 AUTH_USER_MODEL = 'consultora.User'
 
 

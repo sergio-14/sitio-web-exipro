@@ -1,9 +1,11 @@
 {% extends "base.html" %} {% load widget_tweaks %} {% block content %}
 <div class="w-full px-4 md:px-12 py-6">
-  <h2 class="text-3xl dark:text-neutral-400 text-slate-950 font-primary mb-6">{{ titulo }}</h2>
+  <h2 class="text-3xl font-primary dark:text-neutral-400 text-slate-950 mb-6">{{ titulo }}</h2>
+
   <form method="POST" enctype="multipart/form-data" class="space-y-6">
     {% csrf_token %}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Título -->
       <div class="col-span-2">
         <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Título</label>
         {{ form.titulo|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.titulo.errors %}
@@ -11,6 +13,7 @@
         {% endfor %}
       </div>
 
+      <!-- Descripción breve -->
       <div class="col-span-2">
         <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Descripción breve</label>
         {{ form.descripcion_breve|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.descripcion_breve.errors %}
@@ -18,6 +21,7 @@
         {% endfor %}
       </div>
 
+      <!-- Descripción completa -->
       <div class="col-span-2">
         <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Descripción completa</label>
         {{ form.descripcion_completa|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.descripcion_completa.errors %}
@@ -25,13 +29,15 @@
         {% endfor %}
       </div>
 
-      <div>
+      <!-- Imagen de portada -->
+      <div class="col-span-2">
         <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Imagen de portada</label>
         {{ form.imagen_portada|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.imagen_portada.errors %}
         <p class="text-red-500 text-sm mt-1">{{ error }}</p>
         {% endfor %}
       </div>
 
+      <!-- Precio -->
       <div>
         <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Precio</label>
         {{ form.precio|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.precio.errors %}
@@ -39,6 +45,19 @@
         {% endfor %}
       </div>
 
+      <!-- ¿Es gratuito? -->
+      <div>
+        <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">¿Es gratuito?</label>
+        <div class="flex items-center gap-3 mt-2">
+          {{ form.es_gratuito }}
+          <span class="text-sm dark:text-white text-slate-950">Sí</span>
+        </div>
+        {% for error in form.es_gratuito.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <!-- Fecha de publicación -->
       <div>
         <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Fecha de publicación</label>
         {{ form.fecha_publicacion|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.fecha_publicacion.errors %}
@@ -46,13 +65,7 @@
         {% endfor %}
       </div>
 
-      <div class="col-span-2">
-        <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">¿Es gratuito?</label>
-        {{ form.es_gratuito|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2" }} {% for error in form.es_gratuito.errors %}
-        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
-        {% endfor %}
-      </div>
-
+      <!-- Instructor -->
       <div>
         <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Instructor</label>
         {{ form.instructor|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.instructor.errors %}
@@ -60,6 +73,7 @@
         {% endfor %}
       </div>
 
+      <!-- Categoría -->
       <div>
         <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Categoría</label>
         {{ form.categoria|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.categoria.errors %}
