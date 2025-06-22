@@ -49,7 +49,7 @@ class CustomUserAdmin(BaseUserAdmin):
 admin.site.register(User, CustomUserAdmin)
 
 
-from .models import Categoria, Curso, Modulo, Leccion, Plan, Suscripcion, Pago, CursoCompra, Matricula, Empresa, ServicioContable, Cuenta, Mes, Glosa, AsientoDiario, LineaAsiento, LibroMayorEntry, BalanceGeneral, BalanceGeneralLinea, PeriodoFiscal, AsientoAjuste, AsientoAjusteLinea, CierreMensual
+from .models import Categoria, Curso, Modulo, Leccion, Plan, Suscripcion, Pago, CursoCompra, Matricula, Empresa, ServicioContable, Cuenta, Mes, Glosa, AsientoDiario, LineaAsiento, BalanceGeneral, BalanceGeneralLinea, PeriodoFiscal, AsientoAjuste, AsientoAjusteLinea, CierreMensual
 
 admin.site.register(Categoria)
 admin.site.register(Curso) 
@@ -67,7 +67,6 @@ admin.site.register(Mes)
 admin.site.register(Glosa)
 admin.site.register(AsientoDiario)
 admin.site.register(LineaAsiento)
-admin.site.register(LibroMayorEntry)
 admin.site.register(BalanceGeneral)
 admin.site.register(BalanceGeneralLinea)
 admin.site.register(PeriodoFiscal)

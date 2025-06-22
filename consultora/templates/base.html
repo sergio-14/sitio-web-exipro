@@ -38,14 +38,16 @@
           <button class="sidebar-item w-full flex items-center justify-between px-4 py-3 dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg transition-colors" onclick="toggleSubmenu('dashboard-submenu')">
             <div class="flex items-center">
               <i class="fas fa-chart-bar text-lg"></i>
-              <span class="nav-text ml-3">Dashboard</span>
+              <span class="nav-text ml-3">Area Contable</span>
             </div>
             <i class="nav-text fas fa-chevron-down text-sm transition-transform duration-200" id="dashboard-icon"></i>
           </button>
           <div id="dashboard-submenu" class="submenu ml-4 mt-2">
-            <a href="#" class="nav-text block px-4 py-2 text-sm dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-1">Analíticas</a>
-            <a href="#" class="nav-text block px-4 py-2 text-sm dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-1">Reportes</a>
-            <a href="#" class="nav-text block px-4 py-2 text-sm dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg">Métricas</a>
+            <a href="{% url 'empresa_list' %}" class="nav-text block px-4 py-2 text-sm dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-1">Analíticas</a>
+            <a href="{% url 'servicio_list' %}" class="nav-text block px-4 py-2 text-sm dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-1">Reportes</a>
+            <a href="{% url 'cuenta_list' %}" class="nav-text block px-4 py-2 text-sm dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg">Métricas</a>
+            <a href="{% url 'seleccionar_empresa_asientos' %}" class="nav-text block px-4 py-2 text-sm dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg">Métricas</a>
+            <a href="{% url 'balance_list' %}" class="nav-text block px-4 py-2 text-sm dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg">Métricas</a>
           </div>
         </div>
 
@@ -72,7 +74,7 @@
         </div>
 
         <!-- Ventas -->
-        <a href="" class="sidebar-item flex items-center px-4 py-3 dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-2 transition-colors">
+        <a href="{% url 'libro_mayor_list' %}" class="sidebar-item flex items-center px-4 py-3 dark:text-neutral-400 text-gray-700 hover:bg-blue-50 dark:hover:bg-cyan-900/20 dark:hover:text-neutral-300 hover:text-blue-600 rounded-lg mb-2 transition-colors">
           <i class="fas fa-shopping-cart text-lg"></i>
           <span class="nav-text ml-3">Ventas</span>
         </a>

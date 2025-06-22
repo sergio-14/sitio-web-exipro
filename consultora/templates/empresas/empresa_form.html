@@ -1,0 +1,56 @@
+{% extends "base.html" %} {% load widget_tweaks %} {% block content %}
+<div class="w-full px-4 md:px-12 py-6">
+  <h2 class="text-3xl font-primary dark:text-neutral-400 text-slate-950 mb-6">{% if form.instance.pk %}Editar Empresa{% else %}Agregar Empresa{% endif %}</h2>
+
+  <form method="POST" class="space-y-6">
+    {% csrf_token %}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Razón Social -->
+      <div class="col-span-2">
+        <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Razón Social</label>
+        {{ form.razon_social|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.razon_social.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <!-- NIT -->
+      <div>
+        <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">NIT</label>
+        {{ form.nit|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.nit.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <!-- Teléfono -->
+      <div>
+        <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Teléfono</label>
+        {{ form.telefono|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.telefono.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <!-- Dirección -->
+      <div class="col-span-2">
+        <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Dirección</label>
+        {{ form.direccion|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.direccion.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+      <!-- Email -->
+      <div class="col-span-2">
+        <label class="block text-sm font-medium dark:text-white/60 text-slate-950 mb-1">Correo Electrónico</label>
+        {{ form.email|add_class:"dark:bg-cyan-900/10 bg-neutral-200/70 text-slate-950 dark:text-white border border-gray-700/10 focus:outline-none focus:ring-2 focus:ring-cyan-500/10 rounded px-3 py-2 w-full" }} {% for error in form.email.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="mt-6 flex gap-4">
+      <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Guardar</button>
+      <a href="{% url 'empresa_list' %}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

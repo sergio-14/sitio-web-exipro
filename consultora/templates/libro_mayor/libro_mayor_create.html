@@ -1,0 +1,251 @@
+<!-- templates/libro_mayor/libro_mayor_create.html -->
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crear Libro Mayor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
+  </head>
+  <body class="h-full bg-neutral-300 dark:bg-slate-950 text-gray-900 dark:text-gray-100">
+    <div class="min-h-full">
+      <!-- Header -->
+      <header class="bg-white dark:bg-gray-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between items-center h-16">
+            <div class="flex items-center space-x-4">
+              <a href="{% url 'libro_mayor_list' %}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+              </a>
+              <h1 class="text-2xl font-bold text-gray-900 dark:text-white">➕ Crear Libro Mayor</h1>
+            </div>
+            <button onclick="toggleDarkMode()" class="p-2 rounded-md text-gray-400 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-200 transition-colors">
+              <span class="sr-only">Toggle dark mode</span>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Mensajes -->
+        {% if messages %}
+        <div class="mb-6">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} rounded-md p-4 mb-4 {% if message.tags == 'success' %}bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-200{% elif message.tags == 'error' %}bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-200{% else %}bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 text-blue-800 dark:text-blue-200{% endif %}">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                {% if message.tags == 'success' %}
+                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                {% elif message.tags == 'error' %}
+                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+                {% endif %}
+              </div>
+              <div class="ml-3">{{ message }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Formulario -->
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+              <svg class="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Datos del Libro Mayor
+            </h2>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Complete la información para crear un nuevo libro mayor contable.</p>
+          </div>
+
+          <form method="post" class="p-6 space-y-6">
+            {% csrf_token %}
+
+            <!-- Empresa -->
+            <div class="form-group">
+              <label for="{{ form.empresa.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {{ form.empresa.label }}
+                <span class="text-red-500">*</span>
+              </label>
+              {{ form.empresa }} {% if form.empresa.help_text %}
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ form.empresa.help_text }}</p>
+              {% endif %} {% if form.empresa.errors %}
+              <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.empresa.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Cuenta -->
+            <div class="form-group">
+              <label for="{{ form.cuenta.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {{ form.cuenta.label }}
+                <span class="text-red-500">*</span>
+              </label>
+              {{ form.cuenta }} {% if form.cuenta.help_text %}
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ form.cuenta.help_text }}</p>
+              {% endif %} {% if form.cuenta.errors %}
+              <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.cuenta.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Fechas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="form-group">
+                <label for="{{ form.fecha_inicio.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {{ form.fecha_inicio.label }}
+                  <span class="text-red-500">*</span>
+                </label>
+                {{ form.fecha_inicio }} {% if form.fecha_inicio.help_text %}
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ form.fecha_inicio.help_text }}</p>
+                {% endif %} {% if form.fecha_inicio.errors %}
+                <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.fecha_inicio.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <div class="form-group">
+                <label for="{{ form.fecha_fin.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ form.fecha_fin.label }}</label>
+                {{ form.fecha_fin }} {% if form.fecha_fin.help_text %}
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ form.fecha_fin.help_text }}</p>
+                {% endif %} {% if form.fecha_fin.errors %}
+                <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.fecha_fin.errors.0 }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-blue-800 dark:text-blue-200">Información importante</h3>
+                  <div class="mt-2 text-sm text-blue-700 dark:text-blue-300">
+                    <ul class="list-disc list-inside space-y-1">
+                      <li>Si no especifica fecha fin, el libro mayor será "hasta la fecha"</li>
+                      <li>Puede agregar líneas de asientos después de crear el libro mayor</li>
+                      <li>Los saldos se calcularán automáticamente al agregar movimientos</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <a href="{% url 'libro_mayor_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Cancelar
+              </a>
+              <button type="submit" class="inline-flex items-center px-6 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Crear Libro Mayor
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Ayuda contextual -->
+        <div class="mt-8 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-6">
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4 flex items-center">
+            <svg class="h-5 w-5 mr-2 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            ¿Cómo usar el Libro Mayor?
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-600 dark:text-gray-400">
+            <div>
+              <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Pasos básicos:</h4>
+              <ol class="list-decimal list-inside space-y-1">
+                <li>Seleccione la empresa</li>
+                <li>Elija la cuenta contable</li>
+                <li>Defina el período (fechas)</li>
+                <li>Guarde el libro mayor</li>
+              </ol>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Funcionalidades:</h4>
+              <ul class="list-disc list-inside space-y-1">
+                <li>Filtrado por fechas</li>
+                <li>Cálculo automático de saldos</li>
+                <li>Historial de movimientos</li>
+                <li>Exportación a PDF/Excel</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      // Dark mode toggle
+      function toggleDarkMode() {
+        const html = document.documentElement;
+        html.classList.toggle("dark");
+
+        // Guardar preferencia en localStorage
+        const isDark = html.classList.contains("dark");
+        localStorage.setItem("darkMode", isDark);
+      }
+
+      // Cargar preferencia de dark mode
+      document.addEventListener("DOMContentLoaded", function () {
+        const darkMode = localStorage.getItem("darkMode");
+        if (darkMode === "true") {
+          document.documentElement.classList.add("dark");
+        }
+      });
+
+      // Mejorar campos de formulario
+      document.addEventListener("DOMContentLoaded", function () {
+        // Aplicar estilos a los campos del formulario
+        const formFields = document.querySelectorAll('select, input[type="date"], input[type="text"], input[type="number"]');
+        formFields.forEach((field) => {
+          field.classList.add("mt-1", "block", "w-full", "rounded-md", "border-gray-300", "dark:border-gray-600", "shadow-sm", "focus:border-blue-500", "focus:ring-blue-500", "dark:bg-gray-700", "dark:text-white", "sm:text-sm");
+        });
+
+        // Validación de fechas
+        const fechaInicio = document.querySelector('input[name="fecha_inicio"]');
+        const fechaFin = document.querySelector('input[name="fecha_fin"]');
+
+        if (fechaInicio && fechaFin) {
+          fechaInicio.addEventListener("change", function () {
+            if (fechaFin.value && fechaInicio.value > fechaFin.value) {
+              alert("La fecha de inicio no puede ser posterior a la fecha de fin");
+              fechaInicio.value = "";
+            }
+          });
+
+          fechaFin.addEventListener("change", function () {
+            if (fechaInicio.value && fechaFin.value < fechaInicio.value) {
+              alert("La fecha de fin no puede ser anterior a la fecha de inicio");
+              fechaFin.value = "";
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,343 @@
+{% extends 'base.html' %} {% block title %} {% if object %}Editar{% else %}Crear{% endif %} Balance General {% endblock %} {% block content %}
+<div class="px-4 sm:px-0">
+  <!-- Header -->
+  <div class="mb-8">
+    <nav class="flex mb-4" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+          <a href="{% url 'balance_list' %}" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors duration-200">
+            <i class="fas fa-balance-scale mr-2"></i>
+            Balances
+          </a>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+            <span class="text-gray-900 dark:text-gray-100 font-medium">{% if object %}Editar{% else %}Crear{% endif %}</span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      {% if object %}
+      <i class="fas fa-edit text-green-600 dark:text-green-400 mr-3"></i>
+      Editar Balance General {% else %}
+      <i class="fas fa-plus text-blue-600 dark:text-blue-400 mr-3"></i>
+      Crear Balance General {% endif %}
+    </h1>
+    <p class="mt-2 text-gray-600 dark:text-gray-400">{% if object %} Modifica los datos del balance general para {{ object.empresa.razon_social }} {% else %} Completa la información para crear un nuevo balance general {% endif %}</p>
+  </div>
+
+  <form method="post" id="balance-form" class="space-y-8">
+    {% csrf_token %}
+
+    <!-- Información Básica -->
+    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700">
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+          <i class="fas fa-info-circle text-blue-600 dark:text-blue-400 mr-2"></i>
+          Información Básica
+        </h2>
+      </div>
+      <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              {{ form.empresa.label }}
+              <span class="text-red-500">*</span>
+            </label>
+            {{ form.empresa }} {% if form.empresa.errors %}
+            <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.empresa.errors.0 }}</div>
+            {% endif %}
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              {{ form.fecha_corte.label }}
+              <span class="text-red-500">*</span>
+            </label>
+            {{ form.fecha_corte }} {% if form.fecha_corte.errors %}
+            <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.fecha_corte.errors.0 }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Líneas del Balance -->
+    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700">
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700">
+        <div class="flex justify-between items-center">
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            <i class="fas fa-list text-green-600 dark:text-green-400 mr-2"></i>
+            Líneas del Balance
+          </h2>
+          <button type="button" id="add-line" class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+            <i class="fas fa-plus mr-2"></i>
+            Agregar Línea
+          </button>
+        </div>
+      </div>
+      <div class="p-6">
+        <!-- Cabeceras de la tabla -->
+        <div class="hidden md:grid grid-cols-12 gap-4 mb-4 pb-3 border-b border-gray-200 dark:border-slate-600">
+          <div class="col-span-4 text-sm font-medium text-gray-700 dark:text-gray-300">Cuenta Contable</div>
+          <div class="col-span-2 text-sm font-medium text-gray-700 dark:text-gray-300">Tipo</div>
+          <div class="col-span-2 text-sm font-medium text-gray-700 dark:text-gray-300">Saldo Anterior</div>
+          <div class="col-span-2 text-sm font-medium text-gray-700 dark:text-gray-300">Saldo Actual</div>
+          <div class="col-span-2 text-sm font-medium text-gray-700 dark:text-gray-300">Acciones</div>
+        </div>
+
+        <!-- Contenedor de líneas dinámicas -->
+        <div id="balance-lines-container">
+          {{ formset.management_form }} {% for form in formset %}
+          <div class="balance-line-item border border-gray-200 dark:border-slate-600 rounded-lg p-4 mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <!-- Cuenta Contable -->
+              <div class="md:col-span-4">
+                <label class="block md:hidden text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cuenta Contable</label>
+                {{ form.cuenta_contable }} {% if form.cuenta_contable.errors %}
+                <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.cuenta_contable.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <!-- Tipo -->
+              <div class="md:col-span-2">
+                <label class="block md:hidden text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tipo</label>
+                {{ form.tipo }} {% if form.tipo.errors %}
+                <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.tipo.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <!-- Saldo Anterior -->
+              <div class="md:col-span-2">
+                <label class="block md:hidden text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Saldo Anterior</label>
+                {{ form.saldo_anterior }} {% if form.saldo_anterior.errors %}
+                <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.saldo_anterior.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <!-- Saldo Actual -->
+              <div class="md:col-span-2">
+                <label class="block md:hidden text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Saldo Actual</label>
+                {{ form.saldo_actual }} {% if form.saldo_actual.errors %}
+                <div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.saldo_actual.errors.0 }}</div>
+                {% endif %}
+              </div>
+
+              <!-- Acciones -->
+              <div class="md:col-span-2 flex items-center space-x-2">
+                <button type="button" class="remove-line bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors duration-200">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+                {{ form.DELETE }} {% if form.id %}{{ form.id }}{% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Mensaje cuando no hay líneas -->
+        <div id="no-lines-message" class="text-center py-8 text-gray-500 dark:text-gray-400" style="display: {% if formset|length > 0 %}none{% else %}block{% endif %};">
+          <i class="fas fa-inbox text-4xl mb-4"></i>
+          <p>No hay líneas agregadas al balance.</p>
+          <p class="text-sm">Haz clic en "Agregar Línea" para comenzar.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumen del Balance -->
+    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-200 dark:border-slate-700">
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-700">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+          <i class="fas fa-calculator text-purple-600 dark:text-purple-400 mr-2"></i>
+          Resumen del Balance
+        </h2>
+      </div>
+      <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+            <div class="flex items-center">
+              <i class="fas fa-arrow-up text-blue-600 dark:text-blue-400 text-2xl mr-3"></i>
+              <div>
+                <p class="text-sm font-medium text-blue-600 dark:text-blue-400">Total Activos</p>
+                <p class="text-2xl font-bold text-blue-900 dark:text-blue-100" id="total-activos">$0.00</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+            <div class="flex items-center">
+              <i class="fas fa-arrow-down text-red-600 dark:text-red-400 text-2xl mr-3"></i>
+              <div>
+                <p class="text-sm font-medium text-red-600 dark:text-red-400">Total Pasivos</p>
+                <p class="text-2xl font-bold text-red-900 dark:text-red-100" id="total-pasivos">$0.00</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+            <div class="flex items-center">
+              <i class="fas fa-balance-scale text-green-600 dark:text-green-400 text-2xl mr-3"></i>
+              <div>
+                <p class="text-sm font-medium text-green-600 dark:text-green-400">Patrimonio</p>
+                <p class="text-2xl font-bold text-green-900 dark:text-green-100" id="total-patrimonio">$0.00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
+          <div class="flex items-center justify-between">
+            <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Balance Verificado:</span>
+            <span id="balance-status" class="px-3 py-1 rounded-full text-sm font-medium">
+              <!-- Se actualiza dinámicamente -->
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="flex justify-end space-x-4">
+      <a href="{% url 'balance_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors duration-200">
+        <i class="fas fa-times mr-2"></i>
+        Cancelar
+      </a>
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors duration-200">
+        <i class="fas fa-save mr-2"></i>
+        {% if object %}Actualizar{% else %}Crear{% endif %} Balance
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Template para nuevas líneas -->
+<template id="balance-line-template">
+  <div class="balance-line-item border border-gray-200 dark:border-slate-600 rounded-lg p-4 mb-4">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+      <div class="md:col-span-4">
+        <label class="block md:hidden text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cuenta Contable</label>
+        <select name="__prefix__-cuenta_contable" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-gray-100">
+          <option value="">Selecciona una cuenta...</option>
+          <!-- Las opciones se cargarán dinámicamente -->
+        </select>
+      </div>
+      <div class="md:col-span-2">
+        <label class="block md:hidden text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tipo</label>
+        <select name="__prefix__-tipo" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-gray-100">
+          <option value="">Selecciona tipo...</option>
+          <option value="ACTIVO">Activo</option>
+          <option value="PASIVO">Pasivo</option>
+          <option value="PATRIMONIO">Patrimonio</option>
+        </select>
+      </div>
+      <div class="md:col-span-2">
+        <label class="block md:hidden text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Saldo Anterior</label>
+        <input type="number" name="__prefix__-saldo_anterior" step="0.01" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-gray-100" placeholder="0.00" />
+      </div>
+      <div class="md:col-span-2">
+        <label class="block md:hidden text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Saldo Actual</label>
+        <input type="number" name="__prefix__-saldo_actual" step="0.01" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-gray-100" placeholder="0.00" />
+      </div>
+      <div class="md:col-span-2 flex items-center space-x-2">
+        <button type="button" class="remove-line bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors duration-200">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      let formIndex = {{ formset.total_form_count }};
+      const container = document.getElementById('balance-lines-container');
+      const noLinesMessage = document.getElementById('no-lines-message');
+      const managementForm = document.querySelector('#id_form-TOTAL_FORMS');
+
+      // Función para actualizar el resumen del balance
+      function updateBalanceSummary() {
+          let totalActivos = 0;
+          let totalPasivos = 0;
+          let totalPatrimonio = 0;
+
+          document.querySelectorAll('.balance-line-item').forEach(item => {
+              const tipo = item.querySelector('select[name$="-tipo"]').value;
+              const saldoActual = parseFloat(item.querySelector('input[name$="-saldo_actual"]').value) || 0;
+
+              switch(tipo) {
+                  case 'ACTIVO':
+                      totalActivos += saldoActual;
+                      break;
+                  case 'PASIVO':
+                      totalPasivos += saldoActual;
+                      break;
+                  case 'PATRIMONIO':
+                      totalPatrimonio += saldoActual;
+                      break;
+              }
+          });
+
+          document.getElementById('total-activos').textContent = '$' + totalActivos.toLocaleString('es-ES', {minimumFractionDigits: 2});
+          document.getElementById('total-pasivos').textContent = '$' + totalPasivos.toLocaleString('es-ES', {minimumFractionDigits: 2});
+          document.getElementById('total-patrimonio').textContent = '$' + totalPatrimonio.toLocaleString('es-ES', {minimumFractionDigits: 2});
+
+          // Verificar si el balance cuadra
+          const balanceStatus = document.getElementById('balance-status');
+          const diferencia = Math.abs(totalActivos - (totalPasivos + totalPatrimonio));
+
+          if (diferencia < 0.01) {
+              balanceStatus.textContent = 'Balanceado ✓';
+              balanceStatus.className = 'px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+          } else {
+              balanceStatus.textContent = 'Desbalanceado ⚠';
+              balanceStatus.className = 'px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+          }
+      }
+
+      // Agregar nueva línea
+      document.getElementById('add-line').addEventListener('click', function() {
+          const template = document.getElementById('balance-line-template');
+          const newLine = template.content.cloneNode(true);
+
+          // Actualizar nombres de campos
+          newLine.querySelectorAll('[name*="__prefix__"]').forEach(field => {
+              field.name = field.name.replace('__prefix__', 'form-' + formIndex);
+          });
+
+          container.appendChild(newLine);
+          formIndex++;
+          managementForm.value = formIndex;
+
+          noLinesMessage.style.display = 'none';
+          updateBalanceSummary();
+
+          // Agregar event listeners a los nuevos campos
+          addEventListeners(container.lastElementChild);
+      });
+
+      // Función para agregar event listeners
+      function addEventListeners(element) {
+          const removeBtn = element.querySelector('.remove-line');
+          const inputs = element.querySelectorAll('input, select');
+
+          removeBtn.addEventListener('click', function() {
+              element.remove();
+              updateBalanceSummary();
+
+              if (container.children.length === 0) {
+                  noLinesMessage.style.display = 'block';
+              }
+          });
+
+          inputs.forEach(input => {
+              input.addEventListener('change', updateBalanceSummary);
+              input.addEventListener('input', updateBalanceSummary);
+          });
+      }
+
+      // Agregar event listeners a líneas existentes
+      document.querySelectorAll('.balance-line-item').forEach(addEventListeners);
+
+      // Actualizar resumen inicial
+      updateBalanceSummary();
+  });
+</script>
+{% endblock %}

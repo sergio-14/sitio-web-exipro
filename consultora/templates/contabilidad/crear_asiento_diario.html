@@ -1,0 +1,259 @@
+{% extends 'base.html' %} {% load static %} {% block title %}{{ title }} - {{ empresa.razon_social }}{% endblock %} {% block content %}
+<div class="min-h-screen bg-neutral-200 dark:bg-slate-950 py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ title }}</h1>
+          <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ empresa.razon_social }}</p>
+        </div>
+        <a href="{% url 'listar_asientos_diario' empresa.id %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Volver a Lista
+        </a>
+      </div>
+    </div>
+
+    <!-- Mensajes -->
+    {% if messages %} {% for message in messages %}
+    <div class="mb-4 p-4 rounded-md {% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-700 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400{% else %}bg-green-50 border border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400{% endif %}">{{ message }}</div>
+    {% endfor %} {% endif %}
+
+    <!-- Formulario -->
+    <form method="post" id="asiento-form" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Información del Asiento -->
+      <div class="bg-white dark:bg-slate-900 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white">Información del Asiento</h3>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label for="{{ form.fecha.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fecha *</label>
+              {{ form.fecha }} {% if form.fecha.errors %}
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.fecha.errors.0 }}</p>
+              {% endif %}
+            </div>
+
+            <div>
+              <label for="{{ form.mes.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mes Contable *</label>
+              {{ form.mes }} {% if form.mes.errors %}
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.mes.errors.0 }}</p>
+              {% endif %}
+            </div>
+
+            <div>
+              <label for="{{ form.glosa.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Glosa</label>
+              {{ form.glosa }} {% if form.glosa.errors %}
+              <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.glosa.errors.0 }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Líneas del Asiento -->
+      <div class="bg-white dark:bg-slate-900 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Detalle del Asiento</h3>
+            <button type="button" id="add-line" class="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md text-blue-600 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              </svg>
+              Agregar Línea
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead class="bg-gray-50 dark:bg-slate-800">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Cuenta</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Descripción</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Debe</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Haber</th>
+                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="lineas-container" class="bg-white dark:bg-slate-900 divide-y divide-gray-200 dark:divide-gray-700">
+              {{ formset.management_form }} {% for form in formset %}
+              <tr class="linea-row">
+                <td class="px-6 py-4">
+                  {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %} {{ form.cuenta }} {% if form.cuenta.errors %}
+                  <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ form.cuenta.errors.0 }}</p>
+                  {% endif %}
+                </td>
+                <td class="px-6 py-4">
+                  {{ form.descripcion }} {% if form.descripcion.errors %}
+                  <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ form.descripcion.errors.0 }}</p>
+                  {% endif %}
+                </td>
+                <td class="px-6 py-4">
+                  {{ form.debe }} {% if form.debe.errors %}
+                  <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ form.debe.errors.0 }}</p>
+                  {% endif %}
+                </td>
+                <td class="px-6 py-4">
+                  {{ form.haber }} {% if form.haber.errors %}
+                  <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ form.haber.errors.0 }}</p>
+                  {% endif %}
+                </td>
+                <td class="px-6 py-4 text-center">
+                  {% if form.DELETE %} {{ form.DELETE }} {% endif %}
+                  <button type="button" class="delete-line text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot class="bg-gray-50 dark:bg-slate-800">
+              <tr>
+                <td colspan="2" class="px-6 py-3 text-right text-sm font-medium text-gray-900 dark:text-white">Totales:</td>
+                <td class="px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white">
+                  <span id="total-debe">0.00</span>
+                </td>
+                <td class="px-6 py-3 text-right text-sm font-bold text-gray-900 dark:text-white">
+                  <span id="total-haber">0.00</span>
+                </td>
+                <td class="px-6 py-3 text-center">
+                  <span id="balance-indicator" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                    <span class="balance-text">Desbalanceado</span>
+                  </span>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end space-x-4">
+        <a href="{% url 'listar_asientos_diario' empresa.id %}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">Cancelar</a>
+        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          Guardar Asiento
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let totalForms = document.querySelector("#id_lineas-TOTAL_FORMS");
+    let formNum = parseInt(totalForms.value);
+
+    // Función para actualizar totales
+    function updateTotals() {
+      let totalDebe = 0;
+      let totalHaber = 0;
+
+      document.querySelectorAll(".linea-row").forEach(function (row) {
+        if (!row.querySelector('input[name$="-DELETE"]:checked')) {
+          let debeInput = row.querySelector('input[name$="-debe"]');
+          let haberInput = row.querySelector('input[name$="-haber"]');
+
+          if (debeInput && debeInput.value) {
+            totalDebe += parseFloat(debeInput.value) || 0;
+          }
+          if (haberInput && haberInput.value) {
+            totalHaber += parseFloat(haberInput.value) || 0;
+          }
+        }
+      });
+
+      document.getElementById("total-debe").textContent = totalDebe.toFixed(2);
+      document.getElementById("total-haber").textContent = totalHaber.toFixed(2);
+
+      // Actualizar indicador de balance
+      let indicator = document.getElementById("balance-indicator");
+      let balanceText = indicator.querySelector(".balance-text");
+
+      if (Math.abs(totalDebe - totalHaber) < 0.01 && totalDebe > 0) {
+        indicator.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400";
+        balanceText.textContent = "Balanceado";
+      } else {
+        indicator.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400";
+        balanceText.textContent = "Desbalanceado";
+      }
+    }
+
+    // Event listeners para inputs de debe y haber
+    document.addEventListener("input", function (e) {
+      if (e.target.name && (e.target.name.includes("-debe") || e.target.name.includes("-haber"))) {
+        updateTotals();
+
+        // Limpiar el campo opuesto si se ingresa un valor
+        if (e.target.value && parseFloat(e.target.value) > 0) {
+          let row = e.target.closest(".linea-row");
+          if (e.target.name.includes("-debe")) {
+            let haberInput = row.querySelector('input[name$="-haber"]');
+            if (haberInput) haberInput.value = "";
+          } else if (e.target.name.includes("-haber")) {
+            let debeInput = row.querySelector('input[name$="-debe"]');
+            if (debeInput) debeInput.value = "";
+          }
+        }
+      }
+    });
+
+    // Botón para agregar línea
+    document.getElementById("add-line").addEventListener("click", function () {
+      let emptyForm = document.querySelector(".linea-row:last-child").cloneNode(true);
+
+      // Limpiar valores del formulario clonado
+      emptyForm.querySelectorAll("input, select").forEach(function (input) {
+        if (input.type === "checkbox") {
+          input.checked = false;
+        } else {
+          input.value = "";
+        }
+
+        // Actualizar nombres e IDs
+        if (input.name) {
+          input.name = input.name.replace(/lineas-\d+/, "lineas-" + formNum);
+        }
+        if (input.id) {
+          input.id = input.id.replace(/lineas-\d+/, "lineas-" + formNum);
+        }
+      });
+
+      document.getElementById("lineas-container").appendChild(emptyForm);
+      totalForms.value = formNum + 1;
+      formNum++;
+      updateTotals();
+    });
+
+    // Event listener para botones de eliminar
+    document.addEventListener("click", function (e) {
+      if (e.target.closest(".delete-line")) {
+        let row = e.target.closest(".linea-row");
+        let deleteInput = row.querySelector('input[name$="-DELETE"]');
+
+        if (deleteInput) {
+          deleteInput.checked = true;
+          row.style.display = "none";
+        } else {
+          row.remove();
+        }
+        updateTotals();
+      }
+    });
+
+    // Inicializar totales
+    updateTotals();
+  });
+</script>
+{% endblock %}

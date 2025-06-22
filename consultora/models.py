@@ -367,12 +367,7 @@ class Cuenta(models.Model):
         null=True,
         blank=True
     )
-    empresa = models.ForeignKey(
-        Empresa,
-        on_delete=models.CASCADE,
-        related_name='cuentas',
-        help_text="El plan de cuentas pertenece a esta empresa."
-    )
+   
 
     class Meta:
         verbose_name = "Cuenta"
@@ -461,7 +456,7 @@ class AsientoDiario(models.Model):
     numero_asiento = models.PositiveIntegerField(
         help_text="Consecutivo dentro del mes."
     )
-
+    
     class Meta:
         verbose_name = "Asiento Diario"
         verbose_name_plural = "Asientos Diario"
@@ -506,39 +501,75 @@ class LineaAsiento(models.Model):
 # 4. Libro Mayor (General Ledger)
 # ------------------------------------------------------------
 
-class LibroMayorEntry(models.Model):
+class LibroMayor(models.Model):
     """
-    Cada registro en el Libro Mayor refleja un movimiento por cuenta, 
-    obtenido a partir del Libro Diario. Se puede generar via signal o proceso batch.
+    Encabezado del Libro Mayor para una empresa y un rango de fechas.
+    Cada instancia agrupa todas las líneas de asiento de una cuenta
+    para permitir el cálculo de saldos acumulados.
     """
     empresa = models.ForeignKey(
         Empresa,
         on_delete=models.CASCADE,
-        related_name='libromayor_entries'
+        related_name='libros_mayores'
     )
     cuenta = models.ForeignKey(
         Cuenta,
+        on_delete=models.PROTECT,
+        related_name='libros_mayores'
+    )
+    fecha_inicio = models.DateField(default=timezone.now)
+    fecha_fin = models.DateField(blank=True, null=True)
+    creado_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Libro Mayor"
+        verbose_name_plural = "Libros Mayores"
+        ordering = ['-fecha_fin', 'cuenta__codigo']
+
+    def __str__(self):
+        fin = self.fecha_fin or "hasta la fecha"
+        return f"Mayor {self.cuenta.codigo} ({self.empresa.razon_social}) {self.fecha_inicio} - {fin}"
+
+
+class LibroMayorLinea(models.Model):
+    """
+    Línea en el Libro Mayor: corresponde a cada movimiento
+    (debe/haber) de un asiento diario para la cuenta asociada.
+    Incluye el saldo acumulado tras aplicar este movimiento.
+    """
+    libro = models.ForeignKey(
+        LibroMayor,
         on_delete=models.CASCADE,
-        related_name='libromayor_entries'
+        related_name='lineas'
+    )
+    asiento = models.ForeignKey(
+        AsientoDiario,
+        on_delete=models.CASCADE,
+        related_name='lineas_mayor'
+    )
+    linea_asiento = models.ForeignKey(
+        LineaAsiento,
+        on_delete=models.PROTECT,
+        related_name='lineas_mayor'
     )
     fecha = models.DateField()
     descripcion = models.CharField(max_length=255, blank=True, null=True)
     debe = models.DecimalField(max_digits=14, decimal_places=2, default=0)
     haber = models.DecimalField(max_digits=14, decimal_places=2, default=0)
-    saldo = models.DecimalField(
-        max_digits=14,
-        decimal_places=2,
+    saldo_acumulado = models.DecimalField(
+        max_digits=14, 
+        decimal_places=2, 
         default=0,
-        help_text="Saldo acumulado hasta esta línea."
+        help_text="Saldo de la cuenta tras este asiento"
     )
 
     class Meta:
-        verbose_name = "Entrada Libro Mayor"
-        verbose_name_plural = "Entradas Libro Mayor"
-        ordering = ['cuenta__codigo', 'fecha']
+        verbose_name = "Línea Libro Mayor"
+        verbose_name_plural = "Líneas Libro Mayor"
+        ordering = ['fecha', 'id']
 
     def __str__(self):
-        return f"{self.cuenta.codigo} | {self.fecha} | Saldo: {self.saldo}"
+        return f"{self.fecha} | {self.cuenta.codigo} | D:{self.debe} H:{self.haber} S:{self.saldo_acumulado}"
 
 
 # ------------------------------------------------------------
